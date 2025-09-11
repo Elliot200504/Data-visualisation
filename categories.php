@@ -3,7 +3,7 @@
   <!-- Left column: Pie chart and User Logs label -->
   <div class="eight wide column">
     <div class="ui fluid card" style="margin-bottom: 20px;">
-      <div class="content"><div class="header">Doughnut</div></div>
+      <div class="content"><div class="header">Summary</div></div>
       <div class="content"><canvas id="pieChart"></canvas></div>
     </div>
     <div class="ui fluid card">
