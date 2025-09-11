@@ -197,17 +197,17 @@ function renderSummaryCharts(){
 $(function(){
 renderSummaryCharts();
 
-// User logs modal
-$(".user").click(function(){
-const uid=$(this).data("id");
-const u=users.find(x=>x.id==uid);
-$("#modalTitle").text(u.name+" — Activity Logs");
-$("#logContent").empty();
-u.logs.forEach(log=>$("#logContent").append(`<div class="item"><i class="history icon"></i><div class="content">${log}</div></div>`));
-$("#logModal").modal("show");
+// Tabs
+$('.menu .item').tab({
+  onVisible: function(tabPath){
+    $('.nav-section').hide();
+    $('.nav-section[data-tab="'+tabPath+'"]').show();
+  }
 });
+$('.nav-section').hide();
+$('.nav-section.active').show();
 
-// Category charts
+// Category chart modal
 let categoryChartInstance=null;
 $(".category").click(function(){
 const cat=$(this).data("category");
@@ -222,15 +222,20 @@ if(cat==="User Logs"){
 }
 categoryChartInstance=new Chart(ctx,{
     type:(cat==="User Logs"?"bar":"line"),
-    data:{
-        labels:chartData.labels,
-        datasets:[{label:cat,data:chartData.data,borderColor:"#2185d0",backgroundColor:"rgba(33,133,208,0.3)",fill:true}]
-    },
+    data:{labels:chartData.labels,datasets:[{label:cat,data:chartData.data,borderColor:"#2185d0",backgroundColor:(cat==="User Logs"?"#f39c12":"rgba(33,133,208,0.3)"),fill:true}]},
     options:{responsive:true,scales:{y:{beginAtZero:true}}}
 });
 $("#categoryModal").modal("show");
 });
+
+// User logs modal (clickable name)
+$(".user").click(function(){
+const uid=$(this).data("id");
+const u=users.find(x=>x.id==uid);
+alert(u.name+"'s logs:\n"+u.logs.join("\n"));
+});
 });
 </script>
+
 </body>
 </html>
