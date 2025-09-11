@@ -80,7 +80,6 @@ canvas{max-height:220px;}
 .clickable{color:#2185d0;cursor:pointer;}
 .clickable:hover{text-decoration:underline;}
 .nav-section{display:none;margin-top:20px;}
-.nav-section{display:none;margin-top:20px;}
 </style>
 </head>
 <body>
