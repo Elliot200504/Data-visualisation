@@ -1,7 +1,9 @@
 let data, users, details;
+let pieChartInstance = null;
+let barChartInstance = null;
+let userLogsChartInstance = null;
 let categoryChartInstance = null;
 
-// Fetch data from PHP
 function fetchData() {
   $.get(
     "data.php?action=fetch_data",
@@ -18,48 +20,63 @@ function fetchData() {
   );
 }
 
-// Render pie and bar charts
+// Dashboard charts — only render these once
 function renderCharts() {
-  const dataValues = Object.values(data);
-  const dataLabels = Object.keys(data);
-  const baseColors = ["#2185d0", "#21ba45", "#db2828", "#f39c12"];
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+  const colors = ["#2185d0", "#21ba45", "#db2828", "#f39c12"];
 
-  const bgColors = dataValues.map((_, i) => baseColors[i % baseColors.length]);
-
-  new Chart($("#pieChart"), {
-    type: "doughnut",
-    data: {
-      labels: dataLabels,
-      datasets: [
-        {
-          data: dataValues,
-          backgroundColor: bgColors,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: "bottom" } },
-    },
+  // Pie chart
+  const pieCtx = document.getElementById("pieChart").getContext("2d");
+  if (pieChartInstance) pieChartInstance.destroy();
+  pieChartInstance = new Chart(pieCtx, {
+    type: "pie",
+    data: { labels, datasets:[{ data: values, backgroundColor: colors }] },
+    options: { responsive:true, maintainAspectRatio:false }
   });
 
-  new Chart($("#barChart"), {
+  // Bar chart
+  const barCtx = document.getElementById("barChart").getContext("2d");
+  if (barChartInstance) barChartInstance.destroy();
+  barChartInstance = new Chart(barCtx, {
     type: "bar",
-    data: {
-      labels: dataLabels,
-      datasets: [
-        {
-          data: dataValues,
-          backgroundColor: bgColors,
-        },
-      ],
-    },
+    data: { labels, datasets:[{ data: values, backgroundColor: colors }] },
     options: {
-      responsive: true,
-      scales: { y: { beginAtZero: true } },
-    },
+    plugins: {
+      legend: {
+        labels: {
+          filter: (legendItem, data) => (typeof legendItem.text !== 'undefined')
+        }
+      }
+    }
+  }
   });
+
+  // User Logs chart
+  const userLabels = users.map(u => u.name);
+  const userData = users.map(u => u.logs.length);
+  const userColors = ["#f39c12", "#2185d0", "#21ba45", "#db2828"];
+
+  const userCtx = document.getElementById("userLogsChart").getContext("2d");
+  if (userLogsChartInstance) userLogsChartInstance.destroy();
+  userLogsChartInstance = new Chart(userCtx, {
+  type: "bar",
+  data: {
+    labels: userLabels,
+    datasets: [{
+      label: "Number of Logs",
+      data: userData,
+      backgroundColor: userColors,
+      borderColor: "#ffffff",
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { y: { beginAtZero: true } }
+  }
+});
 }
 
 // Render category table
@@ -119,10 +136,12 @@ $(function () {
 
   // Category modal
   $(document).on("click", ".category", function () {
-    let cat = $(this).data("category");
+    const cat = $(this).data("category");
     $("#categoryTitle").text(cat + " — Details");
+
     if (categoryChartInstance) categoryChartInstance.destroy();
-    let ctx = document.getElementById("categoryChart").getContext("2d");
+    const ctx = document.getElementById("categoryChart").getContext("2d");
+
     let chartData;
     if (cat === "User Logs") {
       chartData = {
@@ -136,11 +155,12 @@ $(function () {
       };
     }
 
-    // Generate dynamic colors
-    const baseColors = ["#2185d0", "#21ba45", "#db2828", "#f39c12"];
     const bg = chartData.data.map((_, i) =>
-      cat === "User Logs" ? "#f39c12" : baseColors[i % baseColors.length]
+      cat === "User Logs"
+        ? "#f39c12"
+        : ["#2185d0", "#21ba45", "#db2828", "#f39c12"][i % 4]
     );
+
     categoryChartInstance = new Chart(ctx, {
       type: cat === "User Logs" ? "bar" : "line",
       data: {
@@ -157,6 +177,7 @@ $(function () {
       },
       options: { responsive: true, scales: { y: { beginAtZero: true } } },
     });
+
     $("#categoryModal").modal("show");
   });
 

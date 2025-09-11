@@ -14,8 +14,8 @@ if (!isset($_SESSION['details'])) {
 }
 if (!isset($_SESSION['users'])) {
     $_SESSION['users'] = [
-        ["id"=>1,"name"=>"Anna Svensson","role"=>"Technician","last_login"=>"2025-09-11 08:42","logs"=>["Logged in","Visited Dashboard"]],
-        ["id"=>2,"name"=>"Johan Karlsson","role"=>"Operator","last_login"=>"2025-09-11 09:05","logs"=>["Logged in","Reported error #204"]],
+        ["id"=>1,"name"=>"Anna Svensson","role"=>"Technician","last_login"=>"2025-09-11 08:42","logs"=>["Logged in","Visited Dashboard","Tried creating felanmalan","Logged out"]],
+        ["id"=>2,"name"=>"Johan Karlsson","role"=>"Operator","last_login"=>"2025-09-11 09:05","logs"=>["Logged in","Reported error #204","Went to create ArbetsOrder"]],
         ["id"=>3,"name"=>"Maria Lindgren","role"=>"Manager","last_login"=>"2025-09-11 07:58","logs"=>["Logged in","Reviewed reports"]]
     ];
 }
