@@ -69,7 +69,7 @@ $jsonDetails = json_encode($_SESSION['details']);
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard + User Logs</title>
+<title>Dashboard with Navbar</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
 <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
@@ -79,66 +79,88 @@ body{padding:15px;background:#fafafa;}
 canvas{max-height:220px;}
 .clickable{color:#2185d0;cursor:pointer;}
 .clickable:hover{text-decoration:underline;}
+.nav-section{display:none;margin-top:20px;}
+.nav-section{display:none;margin-top:20px;}
 </style>
 </head>
 <body>
 
-<h3 class="ui header">📊 Dashboard</h3>
-
-<div class="ui two column stackable grid">
-  <div class="column">
-    <div class="ui fluid card">
-      <div class="content"><div class="header">Summary Doughnut</div></div>
-      <div class="content"><canvas id="pieChart"></canvas></div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui fluid card">
-      <div class="content"><div class="header">Summary Bar</div></div>
-      <div class="content"><canvas id="barChart"></canvas></div>
-    </div>
-  </div>
+<!-- Navbar -->
+<div class="ui top attached tabular menu">
+  <a class="item active" data-tab="total">Total Bild</a>
+  <a class="item" data-tab="users">Användare</a>
+  <a class="item" data-tab="logs">Logs</a>
 </div>
 
-<h3 class="ui header" style="margin-top:20px;">📂 Categories</h3>
-<table class="ui very compact celled striped table">
-<thead><tr><th>Category</th><th>Total</th></tr></thead>
-<tbody>
-<?php foreach($_SESSION['data'] as $cat=>$val): ?>
-<tr>
-<td><span class="clickable category" data-category="<?=$cat?>"><?=$cat?></span></td>
-<td><?=$val?></td>
-</tr>
-<?php endforeach; ?>
-</tbody>
-</table>
+<!-- Total Bild Section -->
+<div class="ui bottom attached tab segment nav-section active" data-tab="total">
+  <div class="ui two column stackable grid">
+    <div class="column">
+      <div class="ui fluid card">
+        <div class="content"><div class="header">Summary Doughnut</div></div>
+        <div class="content"><canvas id="pieChart"></canvas></div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui fluid card">
+        <div class="content"><div class="header">Summary Bar</div></div>
+        <div class="content"><canvas id="barChart"></canvas></div>
+      </div>
+    </div>
+  </div>
 
-<h3 class="ui header" style="margin-top:20px;">👥 Users</h3>
-<table class="ui very compact celled striped table">
-<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Last Login</th></tr></thead>
-<tbody>
-<?php foreach($_SESSION['users'] as $u): ?>
-<tr>
-<td><?=$u['id']?></td>
-<td><span class="clickable user" data-id="<?=$u['id']?>"><?=$u['name']?></span></td>
-<td><?=$u['role']?></td>
-<td><?=$u['last_login']?></td>
-</tr>
-<?php endforeach; ?>
-</tbody>
-</table>
-
-<!-- Modals -->
-<div id="logModal" class="ui small modal">
-<div class="header" id="modalTitle"></div>
-<div class="content"><div id="logContent" class="ui relaxed divided list"></div></div>
-<div class="actions"><div class="ui approve button">Close</div></div>
+  <h3 class="ui header" style="margin-top:20px;">📂 Categories</h3>
+  <table class="ui very compact celled striped table">
+  <thead><tr><th>Category</th><th>Total</th></tr></thead>
+  <tbody>
+  <?php foreach($_SESSION['data'] as $cat=>$val): ?>
+  <tr>
+  <td><span class="clickable category" data-category="<?=$cat?>"><?=$cat?></span></td>
+  <td><?=$val?></td>
+  </tr>
+  <?php endforeach; ?>
+  </tbody>
+  </table>
 </div>
 
+<!-- Users Section -->
+<div class="ui bottom attached tab segment nav-section" data-tab="users">
+  <button class="ui tiny green button" id="addUserBtn">Add User</button>
+  <table class="ui very compact celled striped table" style="margin-top:10px;">
+  <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Last Login</th></tr></thead>
+  <tbody>
+  <?php foreach($_SESSION['users'] as $u): ?>
+  <tr>
+  <td><?=$u['id']?></td>
+  <td><span class="clickable user" data-id="<?=$u['id']?>"><?=$u['name']?></span></td>
+  <td><?=$u['role']?></td>
+  <td><?=$u['last_login']?></td>
+  </tr>
+  <?php endforeach; ?>
+  </tbody>
+  </table>
+</div>
+
+<!-- Logs Section -->
+<div class="ui bottom attached tab segment nav-section" data-tab="logs">
+  <h3 class="ui header">📋 User Logs</h3>
+  <?php foreach($_SESSION['users'] as $u): ?>
+  <div class="ui segment">
+    <h4 class="ui dividing header"><?=$u['name']?> <span style="font-size:0.8em;color:gray">(<?=$u['role']?>)</span></h4>
+    <div class="ui relaxed divided list">
+      <?php foreach($u['logs'] as $log): ?>
+      <div class="item"><i class="history icon"></i><div class="content"><?=$log?></div></div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+</div>
+
+<!-- Category Modal -->
 <div id="categoryModal" class="ui small modal">
-<div class="header" id="categoryTitle"></div>
-<div class="content"><canvas id="categoryChart"></canvas></div>
-<div class="actions"><div class="ui approve button">Close</div></div>
+  <div class="header" id="categoryTitle"></div>
+  <div class="content"><canvas id="categoryChart"></canvas></div>
+  <div class="actions"><div class="ui approve button">Close</div></div>
 </div>
 
 <script>
