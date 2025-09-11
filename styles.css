@@ -1,0 +1,115 @@
+/* === BODY & GENERAL === */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background: #1a1a1a url('https://www.transparenttextures.com/patterns/carbon-fibre.png') repeat !important;
+    margin: 0;
+    color: #ffffff !important;
+}
+
+* {
+    outline-color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+
+
+/* === NAVBAR === */
+.ui.menu {
+    background: #111111 !important;
+    border-bottom: 2px solid #333 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.6) !important;
+}
+.ui.menu .item,
+.ui.menu .item.active {
+    color: #f0f0f0 !important;
+}
+
+/* === CARDS & SEGMENTS === */
+.ui.segment, .ui.card {
+    background: #222 !important;
+    border: 1px solid #444 !important;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5) !important;
+}
+
+/* === TABLES === */
+.ui.table {
+    background: #222 !important;
+    color: #f0f0f0 !important;
+}
+.ui.table thead th {
+    background: #111 !important;
+    color: #f0f0f0 !important;
+}
+.ui.table tbody tr {
+    border-bottom: 1px solid #333 !important;
+}
+
+/* === BUTTONS === */
+.ui.button {
+    background: linear-gradient(145deg,#444,#222) !important;
+    color: #f0f0f0 !important;
+    border: 1px solid #555 !important;
+}
+.ui.button.green {
+    background: linear-gradient(145deg,#21ba45,#16ab39) !important;
+    color: #fff !important;
+}
+.ui.button.red {
+    background: linear-gradient(145deg,#db2828,#a61f1f) !important;
+    color: #fff !important;
+}
+
+/* === MODALS === */
+.ui.modal {
+    background: #111 !important;
+    color: #f0f0f0 !important;
+}
+.ui.modal .header {
+    background: #222 !important;
+    color: #f0f0f0 !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* === FORM INPUTS === */
+.ui.form input,
+.ui.form textarea {
+    background: #222 !important;
+    color: #f0f0f0 !important;
+    border: 1px solid #444 !important;
+}
+.ui.form input::placeholder {
+    color: #aaa !important;
+}
+
+/* === LINKS IN FORMS === */
+.form-link {
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    font-size: 0.9em;
+    color: #21ba45 !important;
+    cursor: pointer;
+}
+.form-link:hover {
+    color: #16ab39 !important;
+    text-decoration: underline !important;
+}
+
+/* === CHARTS === */
+canvas {
+    max-height: 200px !important;
+    width: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* === SEGMENTS & LISTS === */
+.ui.segment, .ui.list .item {
+    border-radius: 4px !important;
+    margin-bottom: 10px !important;
+}
+
+/* === HEADERS === */
+.ui.header, .ui.dividing.header {
+    color: #f0f0f0 !important;
+}

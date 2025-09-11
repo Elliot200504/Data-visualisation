@@ -1,0 +1,243 @@
+let data, users, details;
+let categoryChartInstance = null;
+
+// Fetch data from PHP
+function fetchData() {
+  $.get(
+    "data.php?action=fetch_data",
+    function (res) {
+      data = res.data;
+      users = res.users;
+      details = res.details;
+      renderCharts();
+      renderCategoryTable();
+      renderUserTable();
+      renderLogs();
+    },
+    "json"
+  );
+}
+
+// Render pie and bar charts
+function renderCharts() {
+  const dataValues = Object.values(data);
+  const dataLabels = Object.keys(data);
+  const baseColors = ["#2185d0", "#21ba45", "#db2828", "#f39c12"];
+
+  const bgColors = dataValues.map((_, i) => baseColors[i % baseColors.length]);
+
+  new Chart($("#pieChart"), {
+    type: "doughnut",
+    data: {
+      labels: dataLabels,
+      datasets: [
+        {
+          data: dataValues,
+          backgroundColor: bgColors,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom" } },
+    },
+  });
+
+  new Chart($("#barChart"), {
+    type: "bar",
+    data: {
+      labels: dataLabels,
+      datasets: [
+        {
+          data: dataValues,
+          backgroundColor: bgColors,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } },
+    },
+  });
+}
+
+// Render category table
+function renderCategoryTable() {
+  let tbody = $("#categoryTable tbody");
+  tbody.empty();
+  for (let cat in data) {
+    tbody.append(
+      `<tr><td><span class="clickable category" data-category="${cat}">${cat}</span></td><td>${data[cat]}</td></tr>`
+    );
+  }
+}
+
+// Render user table
+function renderUserTable() {
+  let tbody = $("#userTable tbody");
+  tbody.empty();
+  users.forEach((u) => {
+    tbody.append(
+      `<tr><td>${u.id}</td><td><span class="clickable user" data-id="${u.id}">${u.name}</span></td><td>${u.role}</td><td>${u.last_login}</td></tr>`
+    );
+  });
+}
+
+// Render logs
+function renderLogs() {
+  let container = $("#logsContainer");
+  container.empty();
+  users.forEach((u) => {
+    let segment = $('<div class="ui segment"></div>');
+    segment.append(
+      `<h4 class="ui dividing header">${u.name} <span style="font-size:0.8em;color:gray">(${u.role})</span></h4>`
+    );
+    let list = $('<div class="ui relaxed divided list"></div>');
+    u.logs.forEach((log) =>
+      list.append(
+        `<div class="item"><i class="history icon"></i><div class="content">${log}</div></div>`
+      )
+    );
+    segment.append(list);
+    container.append(segment);
+  });
+}
+
+$(function () {
+  fetchData();
+
+  // Tabs
+  $(".menu .item").tab({
+    onVisible: function (tab) {
+      $(".nav-section").hide();
+      $('.nav-section[data-tab="' + tab + '"]').show();
+    },
+  });
+  $(".nav-section").hide();
+  $(".nav-section.active").show();
+
+  // Category modal
+  $(document).on("click", ".category", function () {
+    let cat = $(this).data("category");
+    $("#categoryTitle").text(cat + " — Details");
+    if (categoryChartInstance) categoryChartInstance.destroy();
+    let ctx = document.getElementById("categoryChart").getContext("2d");
+    let chartData;
+    if (cat === "User Logs") {
+      chartData = {
+        labels: users.map((u) => u.name),
+        data: users.map((u) => u.logs.length),
+      };
+    } else {
+      chartData = {
+        labels: details[cat]?.labels || [],
+        data: details[cat]?.values || [],
+      };
+    }
+
+    // Generate dynamic colors
+    const baseColors = ["#2185d0", "#21ba45", "#db2828", "#f39c12"];
+    const bg = chartData.data.map((_, i) =>
+      cat === "User Logs" ? "#f39c12" : baseColors[i % baseColors.length]
+    );
+    categoryChartInstance = new Chart(ctx, {
+      type: cat === "User Logs" ? "bar" : "line",
+      data: {
+        labels: chartData.labels,
+        datasets: [
+          {
+            label: cat,
+            data: chartData.data,
+            borderColor: "#2185d0",
+            backgroundColor: bg,
+            fill: true,
+          },
+        ],
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } },
+    });
+    $("#categoryModal").modal("show");
+  });
+
+  // Add User
+  $("#addUserBtn").click(() => $("#addUserModal").modal("show"));
+  $("#saveUserBtn").click(() => {
+    $.post(
+      "data.php",
+      {
+        action: "add_user",
+        name: $("#addUserForm [name=name]").val(),
+        role: $("#addUserForm [name=role]").val(),
+      },
+      function () {
+        fetchData();
+        $("#addUserModal").modal("hide");
+      }
+    );
+  });
+
+  // --- LOGIN / REGISTER ---
+  $("#loginBtn").click(() => $("#loginModal").modal("show"));
+  $("#registerBtn").click(() => $("#registerModal").modal("show"));
+
+  // Login
+  $("#loginSubmit").click(() => {
+    $.post(
+      "auth.php",
+      {
+        action: "login",
+        username: $("#loginForm [name=username]").val(),
+        password: $("#loginForm [name=password]").val(),
+      },
+      function (res) {
+        if (res.success) location.reload();
+        else alert(res.msg);
+      },
+      "json"
+    );
+  });
+
+  // Register
+  $("#registerSubmit").click(() => {
+    $.post(
+      "auth.php",
+      {
+        action: "register",
+        username: $("#registerForm [name=username]").val(),
+        password: $("#registerForm [name=password]").val(),
+      },
+      function (res) {
+        if (res.success) {
+          $("#registerModal").modal("hide");
+          alert("Registration successful!");
+        } else alert(res.msg);
+      },
+      "json"
+    );
+  });
+
+  // Logout
+  $("#logoutBtn").click(() => {
+    $.post(
+      "auth.php",
+      { action: "logout" },
+      function () {
+        location.reload();
+      },
+      "json"
+    );
+  });
+
+  // Switch from Login to Register
+  $("#toRegister").click(() => {
+    $("#loginModal").modal("hide");
+    $("#registerModal").modal("show");
+  });
+
+  // Switch from Register to Login
+  $("#toLogin").click(() => {
+    $("#registerModal").modal("hide");
+    $("#loginModal").modal("show");
+  });
+});
