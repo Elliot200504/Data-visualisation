@@ -1,0 +1,98 @@
+/* === GENERAL === */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background: #f7f7fa !important;
+    color: #222 !important;
+    min-height: 100vh;
+}
+* {
+    box-sizing: border-box;
+}
+.ui.menu {
+    background: #fff !important;
+    border-bottom: 2px solid #e0e0e0 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
+}
+.ui.menu .item,
+.ui.menu .item.active {
+    color: #222 !important;
+}
+.ui.segment, .ui.card {
+    background: #fff !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.04) !important;
+    border-radius: 12px !important;
+}
+.ui.card .content > .header {
+    color: #222 !important;
+}
+.ui.table {
+    background: #fff !important;
+    color: #222 !important;
+    border-radius: 10px !important;
+}
+.ui.table thead th {
+    background: #f7f7fa !important;
+    color: #222 !important;
+    border-bottom: 2px solid #e0e0e0 !important;
+}
+.ui.table tbody tr {
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+.ui.button {
+    background: linear-gradient(145deg,#f0f0f0,#e0e0e0) !important;
+    color: #222 !important;
+    border: 1px solid #ccc !important;
+    border-radius: 20px !important;
+}
+.ui.button.green {
+    background: linear-gradient(145deg,#21ba45,#16ab39) !important;
+    color: #fff !important;
+}
+.ui.button.red {
+    background: linear-gradient(145deg,#db2828,#a61f1f) !important;
+    color: #fff !important;
+}
+.ui.button:hover, .ui.button:focus {
+    filter: brightness(0.95);
+}
+.ui.modal {
+    background: #fff !important;
+    color: #222 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08) !important;
+}
+.ui.modal .header {
+    background: #f7f7fa !important;
+    color: #222 !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+.ui.form input,
+.ui.form textarea {
+    background: #f7f7fa !important;
+    color: #222 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+.ui.form input::placeholder {
+    color: #888 !important;
+}
+.form-link {
+    color: #21ba45 !important;
+}
+.form-link:hover {
+    color: #16ab39 !important;
+}
+canvas {
+    background: #fff !important;
+}
+#categoryChart {
+    background: #fff !important;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    background: #f7f7fa;
+}
+::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 8px;
+}

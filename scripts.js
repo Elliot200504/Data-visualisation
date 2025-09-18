@@ -24,6 +24,7 @@ function fetchData() {
 }
 
 // === PIE + MAIN BAR CHART ===
+// === PIE + MAIN BAR CHART ===
 function renderPieAndBarCharts() {
   const labels = Object.keys(data);
   const values = Object.values(data);
@@ -35,7 +36,17 @@ function renderPieAndBarCharts() {
   pieChartInstance = new Chart(pieCtx, {
     type: "pie",
     data: { labels, datasets: [{ data: values, backgroundColor: colors }] },
-    options: { responsive: true, maintainAspectRatio: false },
+    options: { 
+      responsive: true, 
+      maintainAspectRatio: false,
+      onClick: function(evt, elements) {
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          const cat = labels[idx];
+          showCategoryModal(cat);
+        }
+      }
+    },
   });
 
   // Main bar chart
@@ -57,6 +68,64 @@ function renderPieAndBarCharts() {
       scales: { y: { beginAtZero: true } },
     },
   });
+}
+
+// Helper to show the category modal with details
+function showCategoryModal(cat) {
+  $("#categoryTitle").text(cat + " — Details");
+
+  // Show the modal first, then render the chart after it's visible
+  $("#categoryModal")
+    .modal({
+      onVisible: function () {
+        if (categoryChartInstance) categoryChartInstance.destroy();
+        const ctx = document.getElementById("categoryChart").getContext("2d");
+
+        let chartData;
+        if (cat === "User Logs") {
+          chartData = {
+            labels: users.map((u) => u.name),
+            data: users.map((u) => u.logs.length),
+          };
+        } else {
+          chartData = {
+            labels: details[cat]?.labels || [],
+            data: details[cat]?.values || [],
+          };
+        }
+
+        const bg = chartData.data.map((_, i) =>
+          ["#2185d0", "#21ba45", "#db2828", "#f39c12"][i % 4]
+        );
+
+        categoryChartInstance = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: chartData.labels,
+            datasets: [
+              {
+                label: cat,
+                data: chartData.data,
+                borderColor: "#2185d0",
+                backgroundColor: "rgba(33,133,208,0.2)",
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: bg,
+                pointRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: { title: { display: true, text: cat === "User Logs" ? "User" : "Day" } },
+              y: { beginAtZero: true, title: { display: true, text: "Count" } },
+            },
+          },
+        });
+      },
+    })
+    .modal("show");
 }
 
 // === USER LOGS CHART ===
@@ -116,6 +185,7 @@ function renderUserTable() {
     );
   });
 }
+
 
 // === USER LOGS RENDERING ===
 function renderLogs() {
@@ -285,5 +355,25 @@ $(function () {
   $("#toLogin").click(() => {
     $("#registerModal").modal("hide");
     $("#loginModal").modal("show");
+  });
+
+  // Night Mode Toggle
+  function setNightMode(on) {
+    const link = document.getElementById("nightModeCSS");
+    if (on) {
+      link.href = "styles.css";
+      $("#nightModeToggle").addClass("active").text("Night Mode");
+      localStorage.setItem("nightMode", "on");
+    } else {
+      link.href = "light.css";
+      $("#nightModeToggle").removeClass("active").text("Light Mode");
+      localStorage.setItem("nightMode", "off");
+    }
+  }
+  // On load, set mode from localStorage
+  setNightMode(localStorage.getItem("nightMode") !== "off");
+  $("#nightModeToggle").click(function () {
+    const isNight = $("#nightModeToggle").hasClass("active");
+    setNightMode(!isNight);
   });
 });

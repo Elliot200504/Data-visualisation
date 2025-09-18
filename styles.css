@@ -1,47 +1,66 @@
-/* === BODY & GENERAL === */
+/* === GENERAL === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    background: #1a1a1a url('https://www.transparenttextures.com/patterns/carbon-fibre.png') repeat !important;
+    background: #181c20 url('https://www.transparenttextures.com/patterns/carbon-fibre.png') repeat !important;
     margin: 0;
-    color: #ffffff !important;
+    color: #fff !important;
+    min-height: 100vh;
 }
 
 * {
+    box-sizing: border-box;
     outline-color: #ffffff !important;
     border-color: #ffffff !important;
 }
 
-
-
 /* === NAVBAR === */
 .ui.menu {
-    background: #111111 !important;
+    background: #111 !important;
     border-bottom: 2px solid #333 !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.6) !important;
+    border-radius: 0 !important;
 }
 .ui.menu .item,
 .ui.menu .item.active {
     color: #f0f0f0 !important;
+    font-weight: 500;
+    font-size: 1.1em;
+}
+.ui.menu .right.menu .item {
+    padding-right: 0.5em !important;
 }
 
 /* === CARDS & SEGMENTS === */
 .ui.segment, .ui.card {
-    background: #222 !important;
-    border: 1px solid #444 !important;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5) !important;
+    background: #23272b !important;
+    border: 1px solid #333 !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.5) !important;
+    border-radius: 12px !important;
+    margin-bottom: 18px !important;
+}
+.ui.card .content > .header {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #fff !important;
 }
 
 /* === TABLES === */
 .ui.table {
-    background: #222 !important;
+    background: #23272b !important;
     color: #f0f0f0 !important;
+    border-radius: 10px !important;
+    font-size: 0.97em;
 }
 .ui.table thead th {
-    background: #111 !important;
+    background: #181c20 !important;
     color: #f0f0f0 !important;
+    border-bottom: 2px solid #333 !important;
 }
 .ui.table tbody tr {
     border-bottom: 1px solid #333 !important;
+}
+.ui.table td, .ui.table th {
+    padding: 0.7em 0.5em !important;
 }
 
 /* === BUTTONS === */
@@ -49,6 +68,9 @@ body {
     background: linear-gradient(145deg,#444,#222) !important;
     color: #f0f0f0 !important;
     border: 1px solid #555 !important;
+    border-radius: 20px !important;
+    font-weight: 500;
+    transition: background 0.2s;
 }
 .ui.button.green {
     background: linear-gradient(145deg,#21ba45,#16ab39) !important;
@@ -58,24 +80,34 @@ body {
     background: linear-gradient(145deg,#db2828,#a61f1f) !important;
     color: #fff !important;
 }
+.ui.button:hover, .ui.button:focus {
+    filter: brightness(1.15);
+}
 
 /* === MODALS === */
 .ui.modal {
-    background: #111 !important;
+    background: #181c20 !important;
     color: #f0f0f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7) !important;
 }
 .ui.modal .header {
-    background: #222 !important;
+    background: #23272b !important;
     color: #f0f0f0 !important;
     border-bottom: 1px solid #444 !important;
+    border-radius: 14px 14px 0 0 !important;
+    font-size: 1.2em;
+    font-weight: 600;
 }
 
 /* === FORM INPUTS === */
 .ui.form input,
 .ui.form textarea {
-    background: #222 !important;
+    background: #23272b !important;
     color: #f0f0f0 !important;
     border: 1px solid #444 !important;
+    border-radius: 8px !important;
+    padding: 0.7em !important;
 }
 .ui.form input::placeholder {
     color: #aaa !important;
@@ -86,9 +118,10 @@ body {
     display: block;
     margin-top: 10px;
     text-align: right;
-    font-size: 0.9em;
+    font-size: 0.95em;
     color: #21ba45 !important;
     cursor: pointer;
+    font-weight: 500;
 }
 .form-link:hover {
     color: #16ab39 !important;
@@ -102,15 +135,111 @@ canvas {
     display: block !important;
     margin: 0 auto !important;
 }
+#categoryChart {
+    max-height: 80px !important;
+    min-height: 60px !important;
+    width: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+.ui.card .content > canvas {
+    min-height: 120px !important;
+    max-height: 200px !important;
+}
 
 /* === SEGMENTS & LISTS === */
 .ui.segment, .ui.list .item {
-    border-radius: 4px !important;
+    border-radius: 8px !important;
     margin-bottom: 10px !important;
+}
+.ui.list .item {
+    background: #23272b !important;
+    color: #f0f0f0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 0.7em 0.5em !important;
 }
 
 /* === HEADERS === */
 .ui.header, .ui.dividing.header {
     color: #f0f0f0 !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 900px) {
+    .ui.grid, .ui.stackable.grid {
+        display: block !important;
+    }
+    .ui.grid > .column, .ui.stackable.grid > .column {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 18px !important;
+    }
+    .ui.card, .ui.segment {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .ui.menu .item {
+        font-size: 1em !important;
+        padding: 0.7em 0.7em !important;
+    }
+    .ui.menu .right.menu .item {
+        padding-right: 0.2em !important;
+    }
+    .ui.table {
+        font-size: 0.95em !important;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 0.98em !important;
+    }
+    .ui.menu {
+        font-size: 0.98em !important;
+    }
+    .ui.header, .ui.dividing.header {
+        font-size: 1.1em !important;
+    }
+    .ui.card .content > .header {
+        font-size: 1em !important;
+    }
+    .ui.table th, .ui.table td {
+        padding: 0.5em 0.3em !important;
+    }
+    .ui.modal {
+        width: 98vw !important;
+        left: 1vw !important;
+        margin: 0 !important;
+    }
+    .ui.modal .header {
+        font-size: 1.05em !important;
+    }
+    #categoryChart {
+        max-height: 60px !important;
+        min-height: 40px !important;
+    }
+}
+
+/* === SCROLLBARS === */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #23272b;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 8px;
+}
+
+/* === MISC === */
+.clickable {
+    cursor: pointer;
+    color: #21ba45 !important;
+    transition: color 0.2s;
+}
+.clickable:hover {
+    color: #16ab39 !important;
+    text-decoration: underline;
+}

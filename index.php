@@ -11,7 +11,7 @@ $loggedIn = $_SESSION['logged_in'] ?? false;
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui/dist/semantic.min.css">
 
 <!-- Night mode CSS, initially inactive -->
-<link rel="stylesheet" href="styles.css" id="nightModeCSS" media="none">
+<link rel="stylesheet" href="styles.css" id="nightModeCSS" media="all">
 
 
 
@@ -41,6 +41,15 @@ $loggedIn = $_SESSION['logged_in'] ?? false;
         <div class="item">
         <div class="ui toggle button" id="nightModeToggle">Night Mode</div>
     </div>
+  </div>
+</div>
+<div id="categoryModal" class="ui small modal">
+  <div class="header" id="categoryTitle"></div>
+  <div class="content">
+    <canvas id="categoryChart"></canvas>
+  </div>
+  <div class="actions">
+    <div class="ui approve button">Close</div>
   </div>
 </div>
 

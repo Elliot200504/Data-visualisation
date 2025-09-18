@@ -55,9 +55,9 @@ if ($action === 'fetch_data') {
     $userLogsCount = array_sum(array_map(fn($u)=>count($u['logs']), $_SESSION['users']));
     $_SESSION['data']['User Logs'] = $userLogsCount;
     echo json_encode([
-        'data'=>$_SESSION['data'],
-        'details'=>$_SESSION['details'],
-        'users'=>$_SESSION['users']
+        'data' => $_SESSION['data'],
+        'users' => $_SESSION['users'],
+        'details' => $_SESSION['details'],
     ]);
     exit;
 }
