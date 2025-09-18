@@ -3,19 +3,19 @@ session_start();
 
 // Initialize demo data
 if (!isset($_SESSION['data'])) {
-    $_SESSION['data'] = ["Felanmalan"=>12, "ArbetsOrder"=>25, "Errors"=>8];
+    $_SESSION['data'] = ["Felanmalan"=>12, "Arbeten"=>25, "Errors"=>8];
 }
 if (!isset($_SESSION['details'])) {
     $_SESSION['details'] = [
         "Felanmalan"=>["labels"=>["Mon","Tue","Wed","Thu","Fri"],"values"=>[2,3,1,4,2]],
-        "ArbetsOrder"=>["labels"=>["Mon","Tue","Wed","Thu","Fri"],"values"=>[5,6,4,7,3]],
+        "Arbeten"=>["labels"=>["Mon","Tue","Wed","Thu","Fri"],"values"=>[5,6,4,7,3]],
         "Errors"=>["labels"=>["Mon","Tue","Wed","Thu","Fri"],"values"=>[1,2,3,1,1]]
     ];
 }
 if (!isset($_SESSION['users'])) {
     $_SESSION['users'] = [
         ["id"=>1,"name"=>"Anna Svensson","role"=>"Technician","last_login"=>"2025-09-11 08:42","logs"=>["Logged in","Visited Dashboard","Tried creating felanmalan","Logged out"]],
-        ["id"=>2,"name"=>"Johan Karlsson","role"=>"Operator","last_login"=>"2025-09-11 09:05","logs"=>["Logged in","Reported error #204","Went to create ArbetsOrder"]],
+        ["id"=>2,"name"=>"Johan Karlsson","role"=>"Operator","last_login"=>"2025-09-11 09:05","logs"=>["Logged in","Reported error #204","Went to create a job"]],
         ["id"=>3,"name"=>"Maria Lindgren","role"=>"Manager","last_login"=>"2025-09-11 07:58","logs"=>["Logged in","Reviewed reports"]]
     ];
 }
